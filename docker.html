@@ -75,7 +75,7 @@
             <p>Veamos un ejemplo:</p>
             <pre>
                         # use phusion/baseimage as base image.
-                        FROM Ubuntu:latest
+                        from ubuntu:latest
                         # use baseimage-docker's init system.
                         cmd ["/sbin/my_init"]
 
@@ -101,29 +101,54 @@
                         volume /data
 
             </pre>
-            <p>El comando FROM sirve para indicar que queremos
+            <p>el comando from sirve para indicar que queremos
                 como una imagen base.
             </p>
-            <p>cmd ["/sbin/my_init"].Este comando es para usar 
+            <p>cmd ["/sbin/my_init"].este comando es para usar 
                 la imagen como sistema de incio.
             </p>
             <p> run apt-get update; \
                 apt-get install -y udhcpd
-                Esto es para instalar los prerequisitos.
+                esto es para instalar los prerequisitos.
                 </p>
                 <p>run mkdir /etc/service/udhcpd
                     add udhcpd.sh /etc/service/udhcpd/run
                     run chmod +x /etc/service/udhcpd/run
 
-                    Estos comandos son para crear los scripts de inicio.
+                    estos comandos son para crear los scripts de inicio.
                 </p>
                 <p> run apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-                    Con esto limpiamos el archivo.
+                    con esto limpiamos el archivo.
                 </p>
-                <p>Exponemos los puertos 67 y 68</p>
+                <p>exponemos los puertos 67 y 68</p>
                 <p> volume /data
-                    Y vemos los volumenes.
+                    y vemos los volumenes.
                 </p>
+                <pre>
+                        # the start and end of the ip lease block
+                        start	172.17.0.200
+                        end		172.17.0.210
+                        
+                        # the interface that udhcpd will use
+                        interface	eth0
+                        
+                        opt	dns	192.168.18.3 8.8.8.8
+                        option	subnet	255.255.0.0
+                        opt	router	172.17.0.1
+                        # opt	wins	192.168.10.10
+                        # option	dns	129.219.13.81	# appended to above dns servers for a total of 3
+                        option	domain	local
+                        option	lease	864000		
+                        </pre>
+                        
+                                <p>crear el contenedor:  </p>                    
+                                    docker build .
+                                <p>
+                                lanzar el contenedor: docker run -d --net=host -p 67:67 -p 67:67/udp 
+                                    -p 68:68 -p 68:68/udp --name=dhcpd 
+                                    -v "ruta al directorio udhcpd"/data ubuntu:latest </p>
+                                </p>
+                                <p>abrir terminal en contenedor: docker exec -ti nombre_contenedor /bin/bash</p>
             
         </div>
 
