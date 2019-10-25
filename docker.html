@@ -19,8 +19,8 @@
 
                 </p>
                 <p>
-                    Un software de maquinas virtuales necesita instalar el 
-                    sistema operativo completo.Ejemplos de sistemas de virtualizacion
+                    Un software de maquinas virtuales necesita instalar el sistema operativo
+                    completo.Ejemplos de sistemas de virtualizacion
                 </p>
                 <ul>
                     <li>VirtualBox (para multiples plataformas)</li>
@@ -32,10 +32,10 @@
                     <li>KVM (para Linux)</li>
                 </ul>
                 <p>
-                    Un software de contenedores es un sistema de virtualizacion que
-                    comparte el kernel con el anfitrion.Se basa en el concepto de
-                    microservicio, donde tengo todos los progrramas instalados,configurados
-                    y fucionando,gracias a los contenedores.
+                    Un software de contenedores es un sistema de virtualizacion que comparte el
+                    kernel con el anfitrion.Se basa en el concepto de microservicio, donde tengo
+                    todos los progrramas instalados,configurados y fucionando,gracias a los
+                    contenedores.
                 </p>
                 <ul>
                     <li>Docker</li>
@@ -50,21 +50,81 @@
                     Para saber mas sobre el tema
                 </p>
                 <ul>
-                    <li><a href="https://www.docker.com">WEB OFICIAL DE DOCKER</a></li>
-                    <li><a href="https://hub.docker.com">DOCKER HUB</a></li>
-                    <li><a href="https://docs.docker.com/get-started/">Tutorial de docker</a></li>
+                    <li>
+                        <a href="https://www.docker.com">WEB OFICIAL DE DOCKER</a>
+                    </li>
+                    <li>
+                        <a href="https://hub.docker.com">DOCKER HUB</a>
+                    </li>
+                    <li>
+                        <a href="https://docs.docker.com/get-started/">Tutorial de docker</a>
+                    </li>
                 </ul>
             </div>
         </div>
         <div id="dockerfile">
             <h2>Dockerfile</h2>
             <p>
-                Un <span class="destacado">Dockerfile</span>es una receta para crear
-                una imagen para una aplicacion particular de Docker. De este modo podemos
-                tomar una imagen base, instalarle programas, configurar esos progreamas y 
-                dejarla preparada para crear contenedores a partir de ella.
+                Un
+                <span class="destacado">Dockerfile</span>es una receta para crear una imagen
+                para una aplicacion particular de Docker. De este modo podemos tomar una imagen
+                base, instalarle programas, configurar esos progreamas y dejarla preparada para
+                crear contenedores a partir de ella.
 
             </p>
+            <p>Veamos un ejemplo:</p>
+            <pre>
+                        # use phusion/baseimage as base image.
+                        FROM Ubuntu:latest
+                        # use baseimage-docker's init system.
+                        cmd ["/sbin/my_init"]
+
+                        # install prerequisites
+                        run apt-get update; \
+	                    apt-get install -y udhcpd
+
+                        # set up start up scripts
+                        run mkdir /etc/service/udhcpd
+                        add udhcpd.sh /etc/service/udhcpd/run
+                        run chmod +x /etc/service/udhcpd/run
+
+                        # clean up apt when done.
+                        run apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+                        # expose the port
+                        #expose 67
+                        #expose 67/udp
+                        #expose 68
+                        #expose 68/udp
+
+                        # volumes
+                        volume /data
+
+            </pre>
+            <p>El comando FROM sirve para indicar que queremos
+                como una imagen base.
+            </p>
+            <p>cmd ["/sbin/my_init"].Este comando es para usar 
+                la imagen como sistema de incio.
+            </p>
+            <p> run apt-get update; \
+                apt-get install -y udhcpd
+                Esto es para instalar los prerequisitos.
+                </p>
+                <p>run mkdir /etc/service/udhcpd
+                    add udhcpd.sh /etc/service/udhcpd/run
+                    run chmod +x /etc/service/udhcpd/run
+
+                    Estos comandos son para crear los scripts de inicio.
+                </p>
+                <p> run apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+                    Con esto limpiamos el archivo.
+                </p>
+                <p>Exponemos los puertos 67 y 68</p>
+                <p> volume /data
+                    Y vemos los volumenes.
+                </p>
+            
         </div>
 
     </body>
